@@ -38,6 +38,8 @@ const ApplyJobForm = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [sendSelectedCountry, setSendSelectedCountry] = useState(null);
 
+  const [filename, setFilename] = useState("");
+
   useEffect(() => {
     const fetchSkillSetOptions = async () => {
       const response = await fetch(`${subURL}/skillset/`);
@@ -72,38 +74,68 @@ const ApplyJobForm = () => {
     e.preventDefault();
     console.log("skill id", skillName);
     async function storeData() {
-      const formData = {
-        user_account_id: 1,
-        first_name: firstName,
-        last_name: lastName,
+      // const formData = {
+      //   user_account_id: 1,
+      //   first_name: firstName,
+      //   last_name: lastName,
 
-        current_salary: currency,
-        is_annually_monthly: salaryFrequency,
+      //   current_salary: currency,
+      //   is_annually_monthly: salaryFrequency,
 
-        currency: currency,
-        certificate_degree_name: degree,
-        major: "test",
-        institute_university_name: universityName,
-        starting_date: educationStartDate,
-        completion_date: educationEndDate,
-        percentage: percentage,
-        cgpa: cgpa,
-        is_current_job: currentlyWorking,
-        start_date: startDate,
-        end_date: endDate,
-        job_title: jobTitle,
-        company_name: companyName,
-        job_location_city: city,
-        job_location_state: state,
-        job_location_country: country,
-        description: rolesAndResponsibility,
-        skill_set_id: skillName,
-        skill_level: skillLevel,
-      };
+      //   currency: currency,
+      //   certificate_degree_name: degree,
+      //   major: "test",
+      //   institute_university_name: universityName,
+      //   starting_date: educationStartDate,
+      //   completion_date: educationEndDate,
+      //   percentage: percentage,
+      //   cgpa: cgpa,
+      //   is_current_job: currentlyWorking,
+      //   start_date: startDate,
+      //   end_date: endDate,
+      //   job_title: jobTitle,
+      //   company_name: companyName,
+      //   job_location_city: city,
+      //   job_location_state: state,
+      //   job_location_country: country,
+      //   description: rolesAndResponsibility,
+      //   skill_set_id: skillName,
+      //   skill_level: skillLevel,
+      // };
+
+      const formData = new FormData();
+      formData.append("user_account_id", 1);
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("current_salary", currentSalary);
+      formData.append("is_annually_monthly", salaryFrequency);
+      formData.append("currency", currency);
+      formData.append("certificate_degree_name", degree);
+      formData.append("major", 'test');
+      formData.append("institute_university_name", universityName);
+      formData.append("starting_date", educationStartDate);
+      formData.append("completion_date", educationEndDate);
+      formData.append("percentage", percentage);
+
+      formData.append("cgpa", cgpa);
+      formData.append("is_current_job", currentlyWorking);
+      formData.append("start_date", universityName);
+      formData.append("starting_date", startDate);
+      formData.append("end_date", endDate);
+      formData.append("job_title", jobTitle);
+
+      formData.append("company_name", companyName);
+      formData.append("job_location_city", city);
+      formData.append("job_location_state", state);
+      formData.append("job_location_country", country);
+      formData.append("description", rolesAndResponsibility);
+      formData.append("skill_set_id", skillName);
+      formData.append("skill_level", skillLevel);
+      formData.append("uploaded_cv", filename);
       console.log(formData);
       try {
         let headers = {
-          "Content-Type": "application/json; charset=utf-8",
+          "Content-Type": "multipart/form-data",
         };
         const res = await axios.post(`${subURL}/seeker_profile/`, formData, {
           headers: headers,
@@ -531,6 +563,20 @@ const ApplyJobForm = () => {
                     />
                   </div>
                 </Col>
+                <Col lg={6}>
+                  <div className="mb-4">
+                    <Label for="companyImage">Upload CV</Label>
+                    <Input
+                      type="file"
+                      name="companyImage"
+                      id="companyImage"
+                      // accept="image/*"
+                      // onChange={(e) => setCompanyImage(e.target.files[0])}
+                      onChange={(e) => setFilename(e.target.files[0])}
+                    />
+                  </div>
+                </Col>
+
                 <Col lg={12}>
                   <div className="d-flex flex-wrap align-items-start gap-1 justify-content-end">
                     <Link to="/joblist" className="btn btn-success">

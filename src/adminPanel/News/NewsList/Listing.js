@@ -57,25 +57,29 @@ const Listing = () => {
   }
 
   function updateHandler() {
-    const FormData = {
-      news_title: newsTitle,
-      news_description: newsDescp,
-      news_image: filename,
-    };
+    const formData = new FormData();
+    formData.append("news_title", newsTitle);
+    formData.append("news_description", newsDescp);
+    formData.append("news_image", null);
+    formData.append("user_account_id", 1);
 
     async function updateData() {
       try {
         let headers = {
-          "Content-Type": "application/json; charset=utf-8",
+          "Content-Type": "multipart/form-data",
         };
-        const dataForm = FormData;
+        console.log('form data ',formData)
+       
         const resLogin = await axios.put(
           `http://127.0.0.1:8000/spacificmanpower/trendingnews/${ID}/`,
-          dataForm,
+          formData,
           {
             headers: headers,
           }
         );
+        if(resLogin.status===200){
+          console.log('updated successfully')
+        }
       } catch (error) {
         console.log(error);
       }
@@ -209,6 +213,7 @@ const Listing = () => {
               </h5>
             </div>
             <ModalBody>
+              <form onSubmit={updateHandler} encType="multipart/form-data">
               <Col lg={12}>
                 <div className="mb-4">
                   <Label htmlFor="jobtitle" className="form-label">
@@ -241,15 +246,14 @@ const Listing = () => {
                   <img src={filename} alt="" className="img-fluid rounded-3" />
                   <Input
                     type="file"
-                    name="newsImage"
+                    name="news_image"
                     id="newsImage"
                     onChange={(e) => setFilename(e.target.files[0])}
                   />
                 </div>
               </Col>
-            </ModalBody>
-
-            <div className="modal-footer">
+              </form>
+              <div className="modal-footer">
               <button
                 type="button"
                 onClick={openEditModal}
@@ -262,9 +266,12 @@ const Listing = () => {
                 className="btn btn-danger btn-sm"
                 onClick={updateHandler}
               >
-                Update12
+                Update
               </button>
             </div>
+            </ModalBody>
+
+       
           </Modal>
         </div>
       </div>
