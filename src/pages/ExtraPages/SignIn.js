@@ -121,7 +121,7 @@ const SignIn = () => {
                           <CardBody className="auth-content p-5 h-100 text-white">
                             <div className="w-100">
                               <div className="text-center mb-4">
-                                <h5>Welcome Back !</h5>
+                                <h5>Welcome Back !!</h5>
                                 <p className="text-white-70">
                                   Sign in to continue to PacificManpower.
                                 </p>
